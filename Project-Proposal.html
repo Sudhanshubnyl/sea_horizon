@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Proposal - Sea Horizon Hotel Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@700&swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --accent: #c5a059;
+            --bg: #ffffff;
+            --text: #333333;
+            --text-muted: #666666;
+            --section-bg: #f9fbfd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--bg);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Cover Page */
+        .proposal-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 60px;
+            border: 1px solid #eee;
+            background: var(--section-bg);
+            border-radius: 20px;
+        }
+
+        .proposal-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .proposal-header p {
+            font-size: 1.2rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .meta-info {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            text-align: left;
+            border-top: 1px solid #ddd;
+            padding-top: 40px;
+        }
+
+        .meta-item b {
+            display: block;
+            color: var(--primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin: 30px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        ul {
+            margin-bottom: 20px;
+            list-style: none;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 12px;
+        }
+
+        ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .table-of-contents {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 60px;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #eee;
+            padding: 10px 0;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .toc-item:hover {
+            color: var(--accent);
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .method-card {
+            background: var(--section-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .method-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 100px;
+            padding: 40px;
+            border-top: 1px solid #eee;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-5px);
+        }
+
+        @media print {
+            @page { size: A4; margin: 20mm 15mm !important; }
+            .print-btn { display: none; }
+            .container { padding: 0; width: 100%; max-width: none; margin: 0 auto; }
+            .proposal-header { border-radius: 0; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header / Cover -->
+        <header class="proposal-header">
+            <p>Academic Project Proposal</p>
+            <h1>SEA HORIZON</h1>
+            <p style="font-size: 0.9rem; letter-spacing: 5px;">Hotel Booking Management</p>
+            
+            <div class="meta-info">
+                <div class="meta-item">
+                    <b>Prepared By</b>
+                    [Your Name]
+                </div>
+                <div class="meta-item">
+                    <b>Student ID</b>
+                    [Your Student ID]
+                </div>
+                <div class="meta-item">
+                    <b>Course Title</b>
+                    Bachelor of Science in Computing
+                </div>
+                <div class="meta-item">
+                    <b>Date</b>
+                    April 2026
+                </div>
+            </div>
+        </header>
+
+        <!-- TOC -->
+        <div class="table-of-contents">
+            <h2>Contents</h2>
+            <a href="#intro" class="toc-item"><span>1. Project Introduction</span> <span>01</span></a>
+            <a href="#problem" class="toc-item"><span>2. Problem Statement</span> <span>02</span></a>
+            <a href="#objectives" class="toc-item"><span>3. Project Objectives</span> <span>03</span></a>
+            <a href="#scope" class="toc-item"><span>4. Scope & Limitations</span> <span>04</span></a>
+            <a href="#methodology" class="toc-item"><span>5. Methodology & Tech Stack</span> <span>05</span></a>
+            <a href="#features" class="toc-item"><span>6. System Modules</span> <span>06</span></a>
+        </div>
+
+        <!-- Section 1: Intro -->
+        <section id="intro">
+            <h2>1. Project Introduction</h2>
+            <p>The hospitality industry is rapidly evolving, with digital solutions becoming the backbone of customer experience and operational management. The <b>Sea Horizon Hotel Management System</b> is proposed as a comprehensive web-based platform designed to streamline hotel operations, from room reservations to administrative reporting.</p>
+            <p>This project aims to bridge the gap between manual management processes and high-end enterprise solutions, providing a scalable and user-friendly tool for small to medium-sized hotels.</p>
+        </section>
+
+        <!-- Section 2: Problem Statement -->
+        <section id="problem">
+            <h2>2. Problem Statement</h2>
+            <p>Many independent hotels still rely on manual ledgers or fragmented spreadsheets to manage their bookings. This leads to several critical issues:</p>
+            <ul>
+                <li>Difficulty in tracking real-time room availability.</li>
+                <li>High risk of overbooking or double-booking errors.</li>
+                <li>Inability to generate comprehensive occupancy and revenue reports.</li>
+                <li>Inefficient communication between the hotel and prospective guests.</li>
+            </ul>
+        </section>
+
+        <!-- Section 3: Objectives -->
+        <section id="objectives">
+            <h2>3. Project Objectives</h2>
+            <p>The primary goal of this project is to develop a functional and secure Hotel Management System. Specific objectives include:</p>
+            <ul>
+                <li><b>Automation:</b> To automate the room booking process, reducing manual intervention.</li>
+                <li><b>Inventory Management:</b> To provide a real-time view of room availability across different categories.</li>
+                <li><b>Reporting:</b> To enable administrators to generate performance reports (bookings between dates).</li>
+                <li><b>User Experience:</b> To create an intuitive interface for guests to browse and book rooms easily.</li>
+            </ul>
+        </section>
+
+        <!-- Section 4: Scope -->
+        <section id="scope">
+            <h2>4. Scope & Limitations</h2>
+            <h3>System Scope</h3>
+            <p>The project will cover the development of two primary interfaces: a Guest-facing portal for bookings and an Admin-facing dashboard for management. It includes room categorization, facility listing, and enquiry management.</p>
+            <h3>Limitations</h3>
+            <ul>
+                <li>The system will not process real-time financial transactions (simulated booking only).</li>
+                <li>Manual cancellation by admins is required for this version.</li>
+                <li>Hosted on a local server environment (XAMPP/WAMP) for current development.</li>
+            </ul>
+        </section>
+
+        <!-- Section 5: Methodology -->
+        <section id="methodology">
+            <h2>5. Methodology & Tech Stack</h2>
+            <p>The project follows the <b>Waterfall Model</b> of software development, ensuring structured progression through Requirements, Design, Development, and Testing phases.</p>
+            
+            <div class="methodology-grid">
+                <div class="method-card">
+                    <h4>Frontend</h4>
+                    <p>HTML5, CSS3, JavaScript, jQuery, and Google Fonts for a premium UI.</p>
+                </div>
+                <div class="method-card">
+                    <h4>Backend</h4>
+                    <p>PHP 8.2 for robust server-side logic and session management.</p>
+                </div>
+                <div class="method-card">
+                    <h4>Database</h4>
+                    <p>MySQL for relational data storage and structured querying.</p>
+                </div>
+                <div class="method-card">
+                    <h4>Architecture</h4>
+                    <p>Client-Server model with a dedicated Admin subdirectory for security.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Features -->
+        <section id="features">
+            <h2>6. System Modules</h2>
+            <h3>User Side</h3>
+            <ul>
+                <li><b>Online Registration:</b> Secure guest sign-up and login.</li>
+                <li><b>Room Selection:</b> Categorized room browsing with detailed descriptions.</li>
+                <li><b>My Bookings:</b> Dashboard for guests to view their reservation history.</li>
+                <li><b>Enquiry Form:</b> Direct communication channel with hotel management.</li>
+            </ul>
+            
+            <h3>Admin Side</h3>
+            <ul>
+                <li><b>Dashboard Stats:</b> Quick overview of users, bookings, and enquiries.</li>
+                <li><b>Booking Management:</b> Review, approve, or reject reservation requests.</li>
+                <li><b>CMS:</b> Manage front-end content including About Us and Facilities.</li>
+                <li><b>Reports:</b> Generate filtered booking reports for business analysis.</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Sea Horizon Hotel Management System - Academic Proposal</p>
+        </footer>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">Download Project Proposal (PDF)</button>
+
+</body>
+</html>
