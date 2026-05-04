@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sea Horizon HBMS — Project Management Gantt Chart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      font-size: 12px;
+    }
+
+    .wrapper {
+      padding: 20px;
+    }
+
+    /* HEADER */
+    .title-bar {
+      background: #1a3a5c;
+      color: #fff;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .subtitle-bar {
+      background: #2a5080;
+      color: #fff;
+      text-align: center;
+      padding: 6px 20px;
+      font-size: 11px;
+    }
+
+    /* BUTTONS */
+    .top-btns {
+      display: flex;
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .btn {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .btn-excel {
+      background: #1d6f42;
+      color: #fff;
+    }
+
+    .btn-print {
+      background: #1a3a5c;
+      color: #fff;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    /* TABLE */
+    .gantt-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 1100px;
+    }
+
+    th,
+    td {
+      border: 1px solid #c8d4e0;
+      padding: 4px 6px;
+      white-space: nowrap;
+    }
+
+    thead tr:first-child th {
+      background: #1a3a5c;
+      color: #fff;
+      text-align: center;
+      font-size: 11px;
+    }
+
+    thead tr:last-child th {
+      background: #2a5080;
+      color: #fff;
+      text-align: center;
+      font-size: 10px;
+    }
+
+    /* fixed left cols */
+    .col-task {
+      min-width: 220px;
+      max-width: 240px;
+      white-space: normal;
+    }
+
+    .col-phase {
+      width: 80px;
+      text-align: center;
+    }
+
+    .col-status {
+      width: 80px;
+      text-align: center;
+    }
+
+    /* phase rows */
+    .phase-header td {
+      background: #1a3a5c;
+      color: #fff;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 5px 8px;
+    }
+
+    .milestone-row td {
+      background: #fffbe6;
+    }
+
+    .milestone-row .col-task {
+      font-weight: 700;
+      color: #7c4d00;
+    }
+
+    /* status badges */
+    .done {
+      color: #1a6b38;
+      font-weight: 600;
+    }
+
+    .due {
+      color: #b45309;
+      font-weight: 600;
+    }
+
+    /* bars */
+    .bar {
+      display: block;
+      height: 14px;
+      border-radius: 3px;
+      margin: 0 auto;
+    }
+
+    .ph1 {
+      background: #4a90d9;
+    }
+
+    .ph2 {
+      background: #2196F3;
+    }
+
+    .ph3 {
+      background: #ff7043;
+    }
+
+    .ph4 {
+      background: #7b1fa2;
+    }
+
+    .ph5 {
+      background: #43a047;
+    }
+
+    .milestone-star {
+      text-align: center;
+      font-size: 14px;
+      color: #b45309;
+    }
+
+    /* LEGEND */
+    .legend {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .leg-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .leg-box {
+      width: 24px;
+      height: 14px;
+      border-radius: 3px;
+    }
+
+    /* zebra */
+    tr:nth-child(even) td:not(.phase-header td) {
+      background: #f7f9fc;
+    }
+
+    tr:hover td {
+      filter: brightness(0.96);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+
+    <div class="title-bar">Sea Horizon HBMS — Project Management Gantt Chart</div>
+    <div class="subtitle-bar">Student: [Your Full Name] &nbsp;|&nbsp; Module: BBIS133 PROJECT &nbsp;|&nbsp; Deadline: 05
+      May 2026</div>
+
+    <div class="top-btns">
+      <button class="btn btn-excel" onclick="exportExcel()">⬇ Export to Excel</button>
+      <button class="btn btn-print" onclick="window.print()">🖨 Print / Save PDF</button>
+    </div>
+
+    <div class="gantt-wrap">
+      <table id="ganttTable">
+        <thead>
+          <tr>
+            <th class="col-task" rowspan="2">Task / Milestone</th>
+            <th class="col-phase" rowspan="2">Phase</th>
+            <th class="col-status" rowspan="2">Status</th>
+            <!-- Jan -->
+            <th colspan="2">January</th>
+            <!-- Feb -->
+            <th colspan="2">February</th>
+            <!-- Mar -->
+            <th colspan="2">March</th>
+            <!-- Apr -->
+            <th colspan="4">April</th>
+            <!-- May -->
+            <th colspan="1">May</th>
+          </tr>
+          <tr>
+            <th>W3<br>20 Jan</th>
+            <th>W4<br>27 Jan</th>
+            <th>W1<br>3 Feb</th>
+            <th>W2<br>10 Feb</th>
+            <th>W1<br>3 Mar</th>
+            <th>W2<br>10 Mar</th>
+            <th>W1<br>7 Apr</th>
+            <th>W2<br>14 Apr</th>
+            <th>W3<br>21 Apr</th>
+            <th>W4<br>28 Apr</th>
+            <th>W1<br>5 May</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- ===== PHASE 1 ===== -->
+          <tr>
+            <td class="phase-header" colspan="14">Phase 1: Planning &amp; System Foundation</td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Project idea conceptualisation</td>
+            <td class="col-phase">Phase 1</td>
+            <td class="col-status done">✔ Done</td>
+            <td><span class="bar ph1" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">System scope &amp; requirements defined</td>
+            <td class="col-phase">Phase 1</td>
+            <td class="col-status done">✔ Done</td>
+            <td><span class="bar ph1" style="width:90%"></span></td>
+            <td><span class="bar ph1" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Database schema designed (high level)</td>
+            <td class="col-phase">Phase 1</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td><span class="bar ph1" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Development environment setup (XAMPP)</td>
+            <td class="col-phase">Phase 1</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td><span class="bar ph1" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Authentication approach planned (sessions)</td>
+            <td class="col-phase">Phase 1</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td><span class="bar ph1" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr class="milestone-row">
+            <td class="col-task">★ Project Proposal submitted (26 Jan)</td>
+            <td class="col-phase">Milestone</td>
+            <td class="col-status done">✔ Done</td>
+            <td class="milestone-star">★</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- ===== PHASE 2 ===== -->
+          <tr>
+            <td class="phase-header" colspan="14">Phase 2: Core System Implementation (Backend &amp; Database)</td>
+          </tr>
+
+          <tr>
+            <td class="col-task">MySQL database created (hbmsdb)</td>
+            <td class="col-phase">Phase 2</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td><span class="bar ph2" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">User registration &amp; login (PDO prepared)</td>
+            <td class="col-phase">Phase 2</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph2" style="width:90%"></span></td>
+            <td><span class="bar ph2" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Admin login + session management</td>
+            <td class="col-phase">Phase 2</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph2" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Room categories &amp; facility management</td>
+            <td class="col-phase">Phase 2</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph2" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Booking overlap detection algorithm</td>
+            <td class="col-phase">Phase 2</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph2" style="width:90%"></span></td>
+            <td><span class="bar ph2" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Booking approval / rejection workflow</td>
+            <td class="col-phase">Phase 2</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph2" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr class="milestone-row">
+            <td class="col-task">★ Interim Report submitted (10 Feb)</td>
+            <td class="col-phase">Milestone</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td class="milestone-star">★</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- ===== PHASE 3 ===== -->
+          <tr>
+            <td class="phase-header" colspan="14">Phase 3: Frontend UI &amp; User-Facing Pages</td>
+          </tr>
+
+          <tr>
+            <td class="col-task">index.php — Landing page (luxury theme)</td>
+            <td class="col-phase">Phase 3</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">about.php — About hotel page</td>
+            <td class="col-phase">Phase 3</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">services.php + gallery.php pages</td>
+            <td class="col-phase">Phase 3</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">category-details.php — Room browsing</td>
+            <td class="col-phase">Phase 3</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">book-room.php — Booking form + cost calc</td>
+            <td class="col-phase">Phase 3</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">my-booking.php + view-application-detail</td>
+            <td class="col-phase">Phase 3</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">invoice.php — PDF invoice generation</td>
+            <td class="col-phase">Phase 3</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">contact.php — Enquiry submission form</td>
+            <td class="col-phase">Phase 3</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph3" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <!-- ===== PHASE 4 ===== -->
+          <tr>
+            <td class="phase-header" colspan="14">Phase 4: Admin Dashboard &amp; Advanced Features</td>
+          </tr>
+
+          <tr>
+            <td class="col-task">dashboard.php — Stats overview panel</td>
+            <td class="col-phase">Phase 4</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">manage-category / add-category / edit-room</td>
+            <td class="col-phase">Phase 4</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">all-booking / approved / new / cancelled</td>
+            <td class="col-phase">Phase 4</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Booking date-range reports (PDF/print)</td>
+            <td class="col-phase">Phase 4</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Enquiry management (read/unread/view)</td>
+            <td class="col-phase">Phase 4</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">profile.php + change-password + forgot-password</td>
+            <td class="col-phase">Phase 4</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Security audit (OWASP Top 10 check)</td>
+            <td class="col-phase">Phase 4</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Manual testing of all features (UAT)</td>
+            <td class="col-phase">Phase 4</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td><span class="bar ph4" style="width:90%"></span></td>
+            <td></td>
+          </tr>
+
+          <!-- ===== PHASE 5 ===== -->
+          <tr>
+            <td class="phase-header" colspan="14">Phase 5: Documentation &amp; Submission</td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Project-Proposal.html written</td>
+            <td class="col-phase">Phase 5</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph5" style="width:90%"></span></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Interim-Report.html written</td>
+            <td class="col-phase">Phase 5</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph5" style="width:90%"></span></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Final-Project-Report.html written</td>
+            <td class="col-phase">Phase 5</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph5" style="width:90%"></span></td>
+            <td></td>
+          </tr>
+
+          <tr>
+            <td class="col-task">Gantt Chart management document</td>
+            <td class="col-phase">Phase 5</td>
+            <td class="col-status done">✔ Done</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><span class="bar ph5" style="width:90%"></span></td>
+            <td></td>
+          </tr>
+
+          <tr class="milestone-row">
+            <td class="col-task">★ Final Report + Submission (5 May)</td>
+            <td class="col-phase">Milestone</td>
+            <td class="col-status due">☐ Due</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="milestone-star">★</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="legend">
+      <strong>LEGEND:</strong>
+      <div class="leg-item">
+        <div class="leg-box" style="background:#4a90d9"></div> Phase 1 — Planning &amp; Foundation
+      </div>
+      <div class="leg-item">
+        <div class="leg-box" style="background:#2196F3"></div> Phase 2 — Core Backend
+      </div>
+      <div class="leg-item">
+        <div class="leg-box" style="background:#ff7043"></div> Phase 3 — Frontend &amp; User Pages
+      </div>
+      <div class="leg-item">
+        <div class="leg-box" style="background:#7b1fa2"></div> Phase 4 — Admin Dashboard
+      </div>
+      <div class="leg-item">
+        <div class="leg-box" style="background:#43a047"></div> Phase 5 — Documentation
+      </div>
+      <div class="leg-item">★ Milestone</div>
+    </div>
+
+  </div><!-- .wrapper -->
+
+  <script>
+    function exportExcel() {
+      var C = {
+        navy: '#1A3A5C', navy2: '#2A5080', white: '#FFFFFF',
+        ph1: '#4A90D9', ph2: '#2196F3', ph3: '#FF7043',
+        ph4: '#7B1FA2', ph5: '#43A047',
+        mBg: '#FFFBE6', mStar: '#7C4D00',
+        done: '#1A6B38', due: '#B45309',
+        alt: '#F7F9FC', bdr: '#C8D4E0'
+      };
+
+      function borders() {
+        return '<Borders>' +
+          '<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="' + C.bdr + '"/>' +
+          '<Border ss:Position="Left"   ss:LineStyle="Continuous" ss:Weight="1" ss:Color="' + C.bdr + '"/>' +
+          '<Border ss:Position="Right"  ss:LineStyle="Continuous" ss:Weight="1" ss:Color="' + C.bdr + '"/>' +
+          '<Border ss:Position="Top"    ss:LineStyle="Continuous" ss:Weight="1" ss:Color="' + C.bdr + '"/>' +
+          '</Borders>';
+      }
+
+      function st(id, bg, fg, bold, center, size) {
+        return '<Style ss:ID="' + id + '">' +
+          '<Alignment ss:Vertical="Center"' + (center ? ' ss:Horizontal="Center"' : ' ss:Horizontal="Left"') + ' ss:WrapText="1"/>' +
+          (bg ? '<Interior ss:Color="' + bg + '" ss:Pattern="Solid"/>' : '<Interior ss:Pattern="None"/>') +
+          '<Font ss:FontName="Calibri" ss:Size="' + (size || 10) + '"' +
+          (fg ? ' ss:Color="' + fg + '"' : '') +
+          (bold ? ' ss:Bold="1"' : '') + '/>' +
+          borders() +
+          '</Style>';
+      }
+
+      var styles = '<Styles>' +
+        st('s0', '', '', 0, 0) +
+        st('s0c', '', '', 0, 1) +
+        st('salt', C.alt, '', 0, 0) +
+        st('saltc', C.alt, '', 0, 1) +
+        st('sh1', C.navy, C.white, 1, 1, 11) +
+        st('sh2', C.navy2, C.white, 1, 1, 10) +
+        st('sph', C.navy, C.white, 1, 0, 11) +
+        // *** KEY FIX: bar style cells use the phase color as BOTH bg and fg so the cell is fully filled ***
+        st('sp1', C.ph1, C.ph1, 0, 1) +
+        st('sp2', C.ph2, C.ph2, 0, 1) +
+        st('sp3', C.ph3, C.ph3, 0, 1) +
+        st('sp4', C.ph4, C.ph4, 0, 1) +
+        st('sp5', C.ph5, C.ph5, 0, 1) +
+        st('sm', C.mBg, '', 0, 0) +
+        st('smc', C.mBg, '', 0, 1) +
+        st('smstar', C.mBg, C.mStar, 1, 1) +
+        st('sdone', '', C.done, 1, 1) +
+        st('sdue', '', C.due, 1, 1) +
+        '</Styles>';
+
+      function esc(s) {
+        return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      // *** KEY FIX: bar cells use a non-breaking space \u00A0 so the Interior fill renders properly ***
+      function c(sid, val, merge) {
+        return '<Cell' + (sid ? ' ss:StyleID="' + sid + '"' : '') +
+          (merge ? ' ss:MergeAcross="' + merge + '"' : '') +
+          '><Data ss:Type="String">' + esc(val) + '</Data></Cell>';
+      }
+
+      var N = null;
+      var weeks = [
+        'Jan W3\n20 Jan', 'Jan W4\n27 Jan',
+        'Feb W1\n3 Feb', 'Feb W2\n10 Feb',
+        'Mar W1\n3 Mar', 'Mar W2\n10 Mar',
+        'Apr W1\n7 Apr', 'Apr W2\n14 Apr', 'Apr W3\n21 Apr', 'Apr W4\n28 Apr',
+        'May W1\n5 May'
+      ];
+
+      var rows2 = '';
+
+      // Title rows
+      rows2 += '<Row ss:Height="28">' + c('sh1', 'Sea Horizon HBMS — Project Management Gantt Chart', 13) + '</Row>';
+      rows2 += '<Row ss:Height="16">' + c('sh2', 'Student: [Your Full Name]  |  Module: BBIS133 PROJECT  |  Deadline: 05 May 2026', 13) + '</Row>';
+
+      // Header row 1 - month groups
+      rows2 += '<Row ss:Height="22">' +
+        c('sh1', 'Task / Milestone') + c('sh1', 'Phase') + c('sh1', 'Status') +
+        c('sh1', 'January', 1) + c('sh1', 'February', 1) +
+        c('sh1', 'March', 1) + c('sh1', 'April', 3) + c('sh1', 'May') +
+        '</Row>';
+
+      // Header row 2 - week labels
+      rows2 += '<Row ss:Height="28">' + c('sh2', '') + c('sh2', '') + c('sh2', '');
+      weeks.forEach(function (w) { rows2 += c('sh2', w); });
+      rows2 += '</Row>';
+
+      var D = [
+        { t: 'phase', l: 'Phase 1: Planning & System Foundation' },
+        { task: 'Project idea conceptualisation', ph: 'Phase 1', st: '✔ Done', ss: 'sdone', bars: ['sp1', N, N, N, N, N, N, N, N, N, N] },
+        { task: 'System scope & requirements defined', ph: 'Phase 1', st: '✔ Done', ss: 'sdone', bars: ['sp1', 'sp1', N, N, N, N, N, N, N, N, N] },
+        { task: 'Database schema designed (high level)', ph: 'Phase 1', st: '✔ Done', ss: 'sdone', bars: [N, 'sp1', N, N, N, N, N, N, N, N, N] },
+        { task: 'Development environment setup (XAMPP)', ph: 'Phase 1', st: '✔ Done', ss: 'sdone', bars: [N, 'sp1', N, N, N, N, N, N, N, N, N] },
+        { task: 'Authentication approach planned (sessions)', ph: 'Phase 1', st: '✔ Done', ss: 'sdone', bars: [N, 'sp1', N, N, N, N, N, N, N, N, N] },
+        { t: 'mile', task: '★ Project Proposal submitted (26 Jan)', st: '✔ Done', ss: 'sdone', bars: ['star', N, N, N, N, N, N, N, N, N, N] },
+
+        { t: 'phase', l: 'Phase 2: Core System Implementation (Backend & Database)' },
+        { task: 'MySQL database created (hbmsdb)', ph: 'Phase 2', st: '✔ Done', ss: 'sdone', bars: [N, 'sp2', N, N, N, N, N, N, N, N, N] },
+        { task: 'User registration & login (PDO prepared)', ph: 'Phase 2', st: '✔ Done', ss: 'sdone', bars: [N, N, 'sp2', 'sp2', N, N, N, N, N, N, N] },
+        { task: 'Admin login + session management', ph: 'Phase 2', st: '✔ Done', ss: 'sdone', bars: [N, N, 'sp2', N, N, N, N, N, N, N, N] },
+        { task: 'Room categories & facility management', ph: 'Phase 2', st: '✔ Done', ss: 'sdone', bars: [N, N, N, 'sp2', N, N, N, N, N, N, N] },
+        { task: 'Booking overlap detection algorithm', ph: 'Phase 2', st: '✔ Done', ss: 'sdone', bars: [N, N, N, 'sp2', 'sp2', N, N, N, N, N, N] },
+        { task: 'Booking approval / rejection workflow', ph: 'Phase 2', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, 'sp2', N, N, N, N, N, N] },
+        { t: 'mile', task: '★ Interim Report submitted (10 Feb)', st: '✔ Done', ss: 'sdone', bars: [N, N, 'star', N, N, N, N, N, N, N, N] },
+
+        { t: 'phase', l: 'Phase 3: Frontend UI & User-Facing Pages' },
+        { task: 'index.php — Landing page (luxury theme)', ph: 'Phase 3', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, 'sp3', N, N, N, N, N, N] },
+        { task: 'about.php — About hotel page', ph: 'Phase 3', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, 'sp3', N, N, N, N, N, N] },
+        { task: 'services.php + gallery.php pages', ph: 'Phase 3', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, 'sp3', 'sp3', N, N, N, N, N] },
+        { task: 'category-details.php — Room browsing', ph: 'Phase 3', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, 'sp3', N, N, N, N, N] },
+        { task: 'book-room.php — Booking form + cost calc', ph: 'Phase 3', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, 'sp3', N, N, N, N, N] },
+        { task: 'my-booking.php + view-application-detail', ph: 'Phase 3', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, 'sp3', 'sp3', N, N, N, N] },
+        { task: 'invoice.php — PDF invoice generation', ph: 'Phase 3', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, 'sp3', N, N, N, N] },
+        { task: 'contact.php — Enquiry submission form', ph: 'Phase 3', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, 'sp3', N, N, N, N] },
+
+        { t: 'phase', l: 'Phase 4: Admin Dashboard & Advanced Features' },
+        { task: 'dashboard.php — Stats overview panel', ph: 'Phase 4', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, 'sp4', N, N, N, N] },
+        { task: 'manage-category / add-category / edit-room', ph: 'Phase 4', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, 'sp4', 'sp4', N, N, N] },
+        { task: 'all-booking / approved / new / cancelled', ph: 'Phase 4', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, 'sp4', N, N, N] },
+        { task: 'Booking date-range reports (PDF/print)', ph: 'Phase 4', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, 'sp4', N, N, N] },
+        { task: 'Enquiry management (read/unread/view)', ph: 'Phase 4', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, 'sp4', 'sp4', N, N] },
+        { task: 'profile.php + change-password + forgot-password', ph: 'Phase 4', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, N, 'sp4', N, N] },
+        { task: 'Security audit (OWASP Top 10 check)', ph: 'Phase 4', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, N, 'sp4', N, N] },
+        { task: 'Manual testing of all features (UAT)', ph: 'Phase 4', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, N, 'sp4', 'sp4', N] },
+
+        { t: 'phase', l: 'Phase 5: Documentation & Submission' },
+        { task: 'Project-Proposal.html written', ph: 'Phase 5', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, N, N, 'sp5', N] },
+        { task: 'Interim-Report.html written', ph: 'Phase 5', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, N, N, 'sp5', N] },
+        { task: 'Final-Project-Report.html written', ph: 'Phase 5', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, N, N, 'sp5', N] },
+        { task: 'Gantt Chart management document', ph: 'Phase 5', st: '✔ Done', ss: 'sdone', bars: [N, N, N, N, N, N, N, N, N, 'sp5', N] },
+        { t: 'mile', task: '★ Final Report + Submission (5 May)', st: '☐ Due', ss: 'sdue', bars: [N, N, N, N, N, N, N, N, N, N, 'star'] }
+      ];
+
+      var ri = 0;
+      D.forEach(function (row) {
+        var alt = (ri % 2 === 0);
+        var ts = alt ? 'salt' : 's0';
+        var tc = alt ? 'saltc' : 's0c';
+
+        if (row.t === 'phase') {
+          rows2 += '<Row ss:Height="18">' + c('sph', row.l, 13) + '</Row>';
+          ri = 0;
+        } else if (row.t === 'mile') {
+          rows2 += '<Row ss:Height="16">' +
+            c('sm', row.task) + c('smc', 'Milestone') + c(row.ss, row.st);
+          row.bars.forEach(function (b) {
+            // *** KEY FIX: use '\u00A0' (non-breaking space) for colored bar cells ***
+            rows2 += (b === 'star') ? c('smstar', '★') : (b ? c(b, '\u00A0') : c('smc', ''));
+          });
+          rows2 += '</Row>';
+          ri++;
+        } else {
+          rows2 += '<Row ss:Height="16">' +
+            c(ts, row.task) + c(tc, row.ph) + c(row.ss, row.st);
+          row.bars.forEach(function (b) {
+            // *** KEY FIX: use '\u00A0' so Interior fill color renders properly in Excel ***
+            rows2 += b ? c(b, '\u00A0') : c(tc, '');
+          });
+          rows2 += '</Row>';
+          ri++;
+        }
+      });
+
+      // Legend
+      rows2 += '<Row ss:Height="8">' + c('s0', '', 13) + '</Row>';
+      rows2 += '<Row ss:Height="16">' + c('sh1', 'LEGEND', 13) + '</Row>';
+      [
+        { s: 'sp1', l: 'Phase 1 — Planning & System Foundation' },
+        { s: 'sp2', l: 'Phase 2 — Core Backend & Database' },
+        { s: 'sp3', l: 'Phase 3 — Frontend & User Pages' },
+        { s: 'sp4', l: 'Phase 4 — Admin Dashboard & Testing' },
+        { s: 'sp5', l: 'Phase 5 — Documentation & Submission' },
+        { s: 'smstar', l: '★ = Milestone' }
+      ].forEach(function (leg) {
+        rows2 += '<Row ss:Height="14">' + c(leg.s, '\u00A0\u00A0\u00A0') + c('s0', leg.l, 12) + '</Row>';
+      });
+
+      var xml = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?>' +
+        '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+        styles +
+        '<Worksheet ss:Name="Gantt Chart"><Table>' +
+        '<Column ss:Width="230"/><Column ss:Width="72"/><Column ss:Width="72"/>' +
+        '<Column ss:Width="54"/><Column ss:Width="54"/><Column ss:Width="54"/><Column ss:Width="54"/>' +
+        '<Column ss:Width="54"/><Column ss:Width="54"/><Column ss:Width="54"/><Column ss:Width="54"/>' +
+        '<Column ss:Width="54"/><Column ss:Width="54"/><Column ss:Width="54"/>' +
+        rows2 +
+        '</Table></Worksheet></Workbook>';
+
+      var blob = new Blob([xml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'SeaHorizon_GanttChart.xls';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+
+  <style>
+    @media print {
+      .top-btns {
+        display: none;
+      }
+
+      body {
+        font-size: 10px;
+      }
+
+      .title-bar {
+        font-size: 14px;
+      }
+
+      .col-task {
+        min-width: 160px;
+        max-width: 200px;
+      }
+    }
+  </style>
+</body>
+
+</html>
